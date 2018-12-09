@@ -3,6 +3,15 @@ using namespace std;
 
 #define ll long long
 
+// Only root(n) different values of n/i
+// Worst case brute force without much maths PROOF
+// Part 1
+// Proof for i=1 to sqrt(n) ... at most root(n) different values possible
+// Part 2
+// for i=sqrt(n) to n .... at most root(n) value possible because firstly n/sqrt(n) will be less or equal sqrt(n) ... 
+// It will decrease gradually and become 1.. Cannot increase so at most sqrt(n) for 2nd part
+// So total 2*sqrt(n) values possible for n/i 
+
 
 int main() {
     /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
