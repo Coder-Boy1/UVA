@@ -1,0 +1,88 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n,m;
+int vis[1000005];
+int vis1[1000005];
+vector < int > a[1000005];
+stack < int > me;
+
+void fun()
+{
+    for(int i=0;i<=n;i++)
+    {
+        vis[i]=0;
+        vis1[i]=0;
+        a[i].clear();
+    }
+    while(!me.empty())
+    me.pop();
+}
+
+void dfs(int p)
+{
+    vis[p]=1;
+    for(int i=0;i<a[p].size();i++)
+    {
+        if(vis[a[p][i]]==0)
+        {
+            dfs(a[p][i]);
+        }
+    }
+}
+
+void findt(int p)
+{
+      vis1[p]=1;
+    for(int i=0;i<a[p].size();i++)
+    {
+        if(vis1[a[p][i]]==0 && vis[p]==0)
+        {
+            findt(a[p][i]);
+        }
+    }
+    me.push(p);
+}
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    
+    int t1,t2;
+    while(cin>>n)
+    {
+        cin>>m;
+
+        fun();
+        for(int i=0;i<m;i++)
+        {
+            cin>>t1>>t2;
+            a[t1].push_back(t2);
+        }
+
+        dfs(0);
+ 
+        for(int i=1;i<=n;i++)
+        {
+            if(vis1[i]==0)
+            {
+            //    cout<<"i"<<endl;
+                findt(i);
+            //    cout<<i<<endl;
+            }
+        }
+        int ans=0;
+    
+        while(!me.empty())
+        {
+            int temp=me.top();
+            me.pop();
+            if(vis[temp]==0 && temp!=0)
+            {
+                dfs(temp);
+                ans++;
+            }
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}
