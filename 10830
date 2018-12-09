@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    
+    long long n;
+    int me=1;
+    while(cin>>n)
+    {
+        if(n==0)
+        break;
+        long long cur=2;
+        ll ans=0;
+        while(1)
+        {
+            if(cur>=n)
+            break;
+           
+            ll l = cur, r = n-1;
+            ll temp = l;
+            while (l <= r) 
+            {
+                ll m=(l+r)/2;
+
+                if(n/m == n/cur)
+                {
+                    temp=max(temp,m);
+                    l=m+1;
+                }
+                else
+                {
+                    r=m-1;
+                }
+            }
+            ll x=n/cur - 1;
+          //  ans = ans + x*(temp-cur+1)*(temp+cur)/2;
+            ans = ans + x*((temp*(temp+1))  - (cur*(cur-1)))/2;
+            cur=temp+1;
+          //  cout<<cur<<endl;
+        }
+        cout<<"Case "<<me++<<":"<<" "<<ans<<endl;
+    }
+    return 0;
+}
