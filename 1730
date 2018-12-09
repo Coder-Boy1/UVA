@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+
+// Only root(n) different values of n/i
+// Worst case brute force without much maths PROOF
+// Part 1
+// Proof for i=1 to sqrt(n) ... at most root(n) different values possible
+// Part 2
+// for i=sqrt(n) to n .... at most root(n) value possible because firstly n/sqrt(n) will be less or equal sqrt(n) ... 
+// It will decrease gradually and become 1.. Cannot increase so at most sqrt(n) for 2nd part
+// So total 2*sqrt(n) values possible for n/i 
+
+
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    
+    long long n;
+    
+    while(cin>>n)
+    {
+        if(n==0)
+        break;
+        long long cur=1;
+        ll ans=0;
+        while(1)
+        {
+            if(cur>n)
+            break;
+           
+            ll l = cur, r = n;
+            ll temp = l;
+            while (l <= r) 
+            {
+                ll m=(l+r)/2;
+
+                if(n/m == n/cur)
+                {
+                    temp=max(temp,m);
+                    l=m+1;
+                }
+                else
+                {
+                    r=m-1;
+                }
+            }
+            ll x=n/cur;
+            ans +=  x*((temp*(temp+1)) - (cur-1)*(cur))/2;    
+            cur=temp+1;
+          //  cout<<cur<<endl;
+        }
+        ans--;
+        cout<<ans<<endl;
+    }
+    return 0;
+}
