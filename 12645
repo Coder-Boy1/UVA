@@ -1,3 +1,12 @@
+// We have to reach to all nodes from node 0. 
+// First run a dfs/bfs from node 0 so that we can find nodes which we can already reach without adding any extra edges.
+// Now for the remaining graph run a topological sort ( Yes It is directed graph but still topological sort would give us correct order)
+// Because for nodes in cycle order doesn't matter
+// Now from topological order check if the current node is visited or not
+// If it is not visited run dfs through that node and mark nodes visited which come along the path of that node.
+// So basically what we are doing is adding edge from 0 to the current unvisited topological vertex ... 
+// and then finding that how many new reachable nodes are there because we will have to add edge for them.
+
 #include <bits/stdc++.h>
 using namespace std;
 
