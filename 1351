@@ -1,0 +1,106 @@
+// Matrix chain multiplication type dp
+// DP[i][j] can be made up by merging to parks means DP[i][k]+DP[k+1][j] or by checking if there ecist a cycle of some length.
+
+
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define ll long long
+
+#define mod 1000000007
+
+ll gcd(ll aa,ll bb) { if(aa==0) return bb; return(bb%aa,aa); }
+
+string s;
+int n;
+
+int dp[2000][2000];
+
+int check(int st,int p,int l)
+{
+    string s1;
+    int me=p;
+    for(int i=0;i<st;i++)
+    {
+        s1+=s[me];
+        me++;
+    }
+    me=p;
+    int x=l/st;
+    for(int i=0;i<x;i++)
+    {
+        for(int j=0;j<st;j++)
+        {
+            if(s[me]!=s1[j])
+            {
+                return 0;
+            }
+            me++;
+        }
+    }
+    return 1;
+}
+
+int cov(int me)
+{
+    int ans=0;
+    while(me!=0)
+    {
+        ans++;
+        me/=10;
+    }
+    return ans;
+}
+
+int main()
+{
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        
+        cin>>s;
+        n=s.length();
+        s='-'+s;
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                dp[i][j]=100000000;
+            }
+        }
+        for(int i=1;i<=n;i++)
+        {
+            dp[i][i]=1;
+        }
+        
+        for(int l=2;l<=n;l++)
+        {
+            for(int i=1;i<=n-l+1;i++)
+            {
+                dp[i][i+l-1]=min(dp[i][i+l-1],l);
+                for(int j=1;j<=l-2;j++)
+                {
+                    dp[i][i+l-1]=min(dp[i][i+l-1],dp[i][i+j]+dp[i+j+1][i+l-1]);
+                
+                    if(l%j==0)
+                    {
+                        int d=check(j,i,l);
+                        int temp=j;
+                        int xx=cov(l/temp);
+                        if(d==1)
+                        {
+                            dp[i][i+l-1]=min(dp[i][i+l-1],dp[i][i+temp-1]+2+xx);
+                        }
+                    }
+                }
+            }
+        }
+        cout<<dp[1][n]<<endl;
+    }
+    return 0;
+}
