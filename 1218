@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int hh=1;
+
+vector<int> a[100005];
+int dp[100005][3];
+int vis[100005][3], cas;
+
+
+int fun(int node,int p,int state)
+{
+    if(vis[node][state]==hh)
+    return dp[node][state];
+
+    vis[node][state]=hh;
+    dp[node][state]= 100005;
+
+    ///put this node as a server
+    if(state != 1 || node == 1){
+        int sum1 = 0;
+        for(auto v : a[node])if(v!=p){
+            sum1 += fun(v,node,0);
+        }
+        dp[node][state] = min(dp[node][state],1 + sum1);
+    }
+    ///don't put this node as a server
+    if(state != 2){
+        if(state!=1||(a[node].size()-(node!=p) > 0)){
+            int sum2 = 0;
+            for(auto v : a[node])if(v != p){
+                sum2 += fun(v,node,state+1);
+            }
+            dp[node][state] = min(dp[node][state], sum2);
+        }
+    }
+    return dp[node][state];
+
+}
+
+
+
+
+int32_t main() 
+{ 
+    while(1)
+    {
+        int n;
+        cin>>n;
+
+        int t1,t2;
+
+        for(int i=0;i<=n;i++) a[i].clear();
+        for(int i=0;i<n-1;i++)
+        {
+            cin>>t1>>t2;
+            a[t1].push_back(t2);
+            a[t2].push_back(t1);
+        }
+        cout<<fun(1,1,1)<<endl;
+        hh++;
+
+
+        int tt;
+        cin>>tt;
+        if(tt==-1)
+        break;
+    }
+    return 0;
+}
