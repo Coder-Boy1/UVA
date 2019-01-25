@@ -1,0 +1,108 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define int long long
+#define N 305
+
+long long n,m;
+
+long long inf = 1e17;
+double INF = 1e13+0.0;
+
+vector < pair < pair < int , int > , double > > e;
+
+int solve(int v)
+{
+    vector< double > d (n, INF);
+    for(int i=0;i<n;i++)
+        d[i] = 0;
+    int c=0;
+    for (;;)
+    {
+        bool any = false;
+
+        for (int j=0; j<m; ++j)
+        {
+            if (d[e[j].first.first] < INF)
+            {
+                if (d[e[j].first.second] > d[e[j].first.first] + e[j].second)
+                {
+                    d[e[j].first.second] = d[e[j].first.first] + e[j].second;
+                    any = true;
+                }
+            }
+        }
+        if (!any || c>=n) 
+            break;
+        else
+            c++;
+    }
+    if(c>=n)
+        return 1;
+    else
+        return 0;
+    // display d, for example, on the screen
+}
+
+int32_t main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    int t;
+    cin>>t;
+    int cs=1;
+    while(t--)
+    {
+        cin>>n>>m;
+        e.clear();
+        int t1,t2;
+        double w;
+        for(int i=0;i<m;i++)
+        {
+            cin>>t1>>t2>>w;
+            t1--; t2--;
+            e.push_back({{t1,t2},w});
+        }
+
+        cout<<"Case #"<<cs++<<": ";
+        
+        double ans=1e13+0.0;
+
+        double l=0,r=ans;
+
+        for(int j=0;j<200;j++)
+        {
+            double mid=(l+r+0.0)/2;
+            for(int i=0;i<m;i++)
+            {
+                    e[i].second=e[i].second-mid-0.0;
+            }
+            
+            int flag = solve(0);
+            
+            if(flag==1)
+            {
+                ans=min(ans,mid);
+                r=mid;
+            }
+            else
+            {
+                l=mid;
+            }
+            for(int i=0;i<m;i++)
+                e[i].second=e[i].second+mid;
+        }
+
+        if(ans==1e13)
+        {
+            cout << "No cycle found."<<endl;
+        }
+        else
+        {
+          std::cout << std::fixed;
+          std::cout << std::setprecision(2) << ans << '\n';
+        }
+
+    }
+
+    return 0;
+}
